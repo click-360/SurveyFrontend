@@ -1,21 +1,153 @@
 <template>
-  <div id="test">
-    <!-- :marks="marks" -->
-    <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" width="720px" v-bind="options"
-    @dragging="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
-    </vue-slider>
+  <div id="test" style="padding-left: 120px;">
+    <div>
+      <!-- :marks="marks" -->
+      <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" width="720px" v-bind="options"
+      @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
+        <template v-slot:label="{ label, active }">
+          <div :class="['vue-slider-mark-label', 'custom-label', { active }]">{{ label }}%</div>
+        </template>
+      </vue-slider>
+    </div>
+    <div style="padding-top: 120px;">
+      <v-popover offset="16" :disabled="!isEnabled">
+        <button class="tooltip-target b3">Likert Chart</button>
+        <template slot="popover">
+          <p>
+            <LikertTableTest/>
+          </p>
+          <a v-close-popover>Close</a>
+        </template>
+      </v-popover>
+    </div>
   </div>
 </template>
 
+<style>
+  .tooltip {
+    display: block !important;
+    z-index: 10000;
+  }
+
+  .tooltip .tooltip-inner {
+    background: black;
+    color: #f9f9f9;
+    border-radius: 16px;
+    padding: 5px 10px 4px;
+  }
+
+  .tooltip .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: black;
+    z-index: 1;
+  }
+
+  .tooltip[x-placement^="top"] {
+    margin-bottom: 5px;
+  }
+
+  .tooltip[x-placement^="top"] .tooltip-arrow {
+    border-width: 5px 5px 0 5px;
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    bottom: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .tooltip[x-placement^="bottom"] {
+    margin-top: 5px;
+  }
+
+  .tooltip[x-placement^="bottom"] .tooltip-arrow {
+    border-width: 0 5px 5px 5px;
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    border-top-color: transparent !important;
+    top: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .tooltip[x-placement^="right"] {
+    margin-left: 5px;
+  }
+
+  .tooltip[x-placement^="right"] .tooltip-arrow {
+    border-width: 5px 5px 5px 0;
+    border-left-color: transparent !important;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    left: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .tooltip[x-placement^="left"] {
+    margin-right: 5px;
+  }
+
+  .tooltip[x-placement^="left"] .tooltip-arrow {
+    border-width: 5px 0 5px 5px;
+    border-top-color: transparent !important;
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .tooltip.popover .popover-inner {
+    background: #f9f9f9;
+    color: black;
+    padding: 24px;
+    border-radius: 5px;
+    box-shadow: 0 5px 30px rgba(black, .1);
+  }
+
+  .tooltip.popover .popover-arrow {
+    border-color: #f9f9f9;
+  }
+
+  .tooltip[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s;
+  }
+
+  .tooltip[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s;
+  }
+</style>
+
 <script>
+import Vue from 'vue'
 import VueSlider from 'vue-slider-component';
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 import 'vue-slider-component/theme/antd.css'
 import constant from "../utils/constants";
+import LikertTableTest from '../components/LikertTableTest'
+
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
 
 export default {
   name: "SliderTest",
   components: {
-    VueSlider
+    VueSlider,
+    LikertTableTest
   },
   computed: {
     SliderColors() {
@@ -69,23 +201,23 @@ export default {
         let label = ''
         switch(true) {
           case (value < 20 && value >= 0): 
-            label = `${value} above 0`
+            label = `${value}% above 0`
             break
 
           case (value <= 40 && value >= 20): 
-            label = `${value} above 20`
+            label = `${value}% above 20`
             break
 
           case (value <= 60 && value >= 40): 
-            label = `${value} above 40`
+            label = `${value}% above 40`
             break
 
           case (value <= 80 && value >= 60): 
-            label = `${value} above 60`
+            label = `${value}% above 60`
             break
           
           case (value <= 100 && value >= 80): 
-            label = `${value} above 80`
+            label = `${value}% above 80`
             break 
         }
         return label
@@ -96,8 +228,9 @@ export default {
     return {
       value: [0],
       marks: val => val % (100/5) === 0,
-      process2: dotsPos => [
-      ],
+      process2: dotsPos => [],
+      isEnabled: true,
+      msg: 'test',
       dotsPos: [],
       options: {
         dotSize: 14,
