@@ -1,29 +1,43 @@
 <template>
-  <div id="test" style="padding-left: 120px;">
-    <div>
-      <!-- :marks="marks" -->
-      <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" width="720px" v-bind="options"
-      @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
-        <template v-slot:label="{ label, active }">
-          <div :class="['vue-slider-mark-label', 'custom-label', { active }]">{{ label }}%</div>
-        </template>
-      </vue-slider>
-    </div>
-    <div style="padding-top: 120px;">
-      <v-popover offset="16" :disabled="!isEnabled">
-        <button class="tooltip-target b3">Likert Chart</button>
+  <div id="test">
+    <div class="row">
+      <div class="col-1"><i class="fa fa-frown-o fa-lg" aria-hidden="true"></i></div>
+      <div class="col-6">
+        <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" width="620px" v-bind="options"
+        @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
+          <template v-slot:label="{ label, active }">
+            <div :class="['vue-slider-mark-label', 'custom-label', { active }]">{{ label }}%</div>
+          </template>
+        </vue-slider>
+      </div>
+      <div class="col-1"><i class="fa fa-smile-o fa-lg" aria-hidden="true"></i></div>
+      <div class="col-4 align-justify">
+        <v-popover offset="16" :disabled="!isEnabled">
+        <i class="fa fa-info-circle fa-lg cursor-pointer" aria-hidden="true"></i>
         <template slot="popover">
           <p>
             <LikertTableTest/>
           </p>
-          <a v-close-popover>Close</a>
+          <a v-close-popover><i class="fa fa-window-close fa-lg cursor-pointer" aria-hidden="true"></i></a>
         </template>
       </v-popover>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 30px;">
+      <div class="col-12 align-justify">
+        <span style="padding-left: inherit;">
+          {{tooltipLabel(value)}}
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <style>
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+  @import "~bootstrap/dist/css/bootstrap.css";
+  @import "~bootstrap-vue/dist/bootstrap-vue.css";
+  
   .tooltip {
     display: block !important;
     z-index: 10000;
@@ -107,9 +121,9 @@
   }
 
   .tooltip.popover .popover-inner {
-    background: #f9f9f9;
+    background:#a7d9bb;
     color: black;
-    padding: 24px;
+    padding: 10px;
     border-radius: 5px;
     box-shadow: 0 5px 30px rgba(black, .1);
   }
@@ -128,6 +142,14 @@
     visibility: visible;
     opacity: 1;
     transition: opacity .15s;
+  }
+
+  .cursor-pointer {
+    cursor: pointer !important;
+  }
+
+  .align-justify {
+    text-align: justify;
   }
 </style>
 
@@ -156,23 +178,20 @@ export default {
         switch(true) {
           case (value < 20 && value >= 0): 
             this.process2 = dotsPos => [
-              [0, value, { backgroundColor: constant.BgColor.first.color }]
-            ]
+            [0, value, { backgroundColor: constant.BgColor.first.color }]]
             break
 
           case (value <= 40 && value >= 20): 
             this.process2 = dotsPos => [
             [0, 20, { backgroundColor: constant.BgColor.first.color }], 
-            [20, value, { backgroundColor: constant.BgColor.second.color }]
-            ]
+            [20, value, { backgroundColor: constant.BgColor.second.color }]]
             break
 
           case (value <= 60 && value >= 40): 
             this.process2 = dotsPos => [
             [0, 20, { backgroundColor: constant.BgColor.first.color }], 
             [20, 40, { backgroundColor: constant.BgColor.second.color }], 
-            [40, value, { backgroundColor: constant.BgColor.third.color }]
-            ]
+            [40, value, { backgroundColor: constant.BgColor.third.color }]]
             break
 
           case (value <= 80 && value >= 60): 
@@ -180,8 +199,7 @@ export default {
             [0, 20, { backgroundColor: constant.BgColor.first.color }], 
             [20, 40, { backgroundColor: constant.BgColor.second.color }], 
             [40, 60, { backgroundColor: constant.BgColor.third.color }],
-            [60, value, { backgroundColor: constant.BgColor.fourth.color }]
-            ]
+            [60, value, { backgroundColor: constant.BgColor.fourth.color }]]
             break
           
           case (value <= 100 && value >= 80): 
@@ -190,8 +208,7 @@ export default {
             [20, 40, { backgroundColor: constant.BgColor.second.color }], 
             [40, 60, { backgroundColor: constant.BgColor.third.color }],
             [60, 80, { backgroundColor: constant.BgColor.fourth.color }],
-            [80, value, { backgroundColor: constant.BgColor.fifth.color }]
-            ]
+            [80, value, { backgroundColor: constant.BgColor.fifth.color }]]
             break 
         }
       }
@@ -201,23 +218,23 @@ export default {
         let label = ''
         switch(true) {
           case (value < 20 && value >= 0): 
-            label = `${value}% above 0`
+            label = `To a very small extent: ${value}%`
             break
 
           case (value <= 40 && value >= 20): 
-            label = `${value}% above 20`
+            label = `To a small extent: ${value}%`
             break
 
           case (value <= 60 && value >= 40): 
-            label = `${value}% above 40`
+            label = `Somewhat: ${value}%`
             break
 
           case (value <= 80 && value >= 60): 
-            label = `${value}% above 60`
+            label = `To a great extent: ${value}%`
             break
           
           case (value <= 100 && value >= 80): 
-            label = `${value}% above 80`
+            label = `To a very great extent: ${value}%`
             break 
         }
         return label
