@@ -25,7 +25,7 @@
     </div>
     <div class="row" style="padding-top: 30px;">
       <div class="col-12 align-justify">
-        <span style="padding-left: inherit;">
+        <span style="padding-left: inherit;font-size: large;">
           {{tooltipLabel(value)}}
         </span>
       </div>
