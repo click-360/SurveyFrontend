@@ -1,7 +1,7 @@
 <template>
   <div id="test">
     <div class="row">
-      <div class="col-1"><i class="fa fa-frown-o fa-lg" aria-hidden="true"></i></div>
+      <div class="col-1"><i class="fa fa-frown-o fa-lg icon-frown" aria-hidden="true"></i></div>
       <div class="col-7">
         <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" v-bind="options"
         @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
@@ -10,7 +10,7 @@
           </template>
         </vue-slider>
       </div>
-      <div class="col-1"><i class="fa fa-smile-o fa-lg" aria-hidden="true"></i></div>
+      <div class="col-1"><i class="fa fa-smile-o fa-lg icon-smile" aria-hidden="true"></i></div>
       <div class="col-3 align-justify">
         <v-popover offset="16" :disabled="!isEnabled">
         <i class="fa fa-info-circle fa-lg cursor-pointer" aria-hidden="true"></i>
@@ -150,6 +150,14 @@
 
   .align-justify {
     text-align: justify;
+  }
+
+  .icon-frown {
+    color: #ff0d0d;
+  }
+
+  .icon-smile {
+    color: #69b34c;
   }
 </style>
 
