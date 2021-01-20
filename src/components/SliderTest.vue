@@ -2,7 +2,7 @@
   <div id="test">
     <div class="row">
       <div class="col-1"><i class="fa fa-frown-o fa-lg" aria-hidden="true"></i></div>
-      <div class="col-6">
+      <div class="col-7">
         <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" v-bind="options"
         @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
           <template v-slot:label="{ label, active }">
@@ -11,7 +11,7 @@
         </vue-slider>
       </div>
       <div class="col-1"><i class="fa fa-smile-o fa-lg" aria-hidden="true"></i></div>
-      <div class="col-4 align-justify">
+      <div class="col-3 align-justify">
         <v-popover offset="16" :disabled="!isEnabled">
         <i class="fa fa-info-circle fa-lg cursor-pointer" aria-hidden="true"></i>
         <template slot="popover">
