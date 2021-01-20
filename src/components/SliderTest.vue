@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-1"><i class="fa fa-frown-o fa-lg" aria-hidden="true"></i></div>
       <div class="col-6">
-        <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" width="620px" v-bind="options"
+        <vue-slider v-model="value" :marks="marks" :process="process2" height="10px" v-bind="options"
         @change="SliderColors(value)" :tooltip-formatter="tooltipLabel(value)">
           <template v-slot:label="{ label, active }">
             <div :class="['vue-slider-mark-label', 'custom-label', { active }]">{{ label }}%</div>
